@@ -29,11 +29,15 @@ class PgSQL:
 
 
     # 插入多行数据
-    def insert_many_rows_data(self, table_name, str_tuple_fileds, list_values, fileds_count):
-        str_s = "%s," * fileds_count
-        str_ins = "insert into {} {} values ({})".format(table_name, str_tuple_fileds, str_s.rstrip(","))
-        self.cur.executemany(str_ins, list_values)
-        self.db.commit()
+    def insert_many_rows_data(self, table_name, str_tuple_fileds, fileds_count, list_values):
+        try:
+            str_s = "%s," * fileds_count
+            str_ins = "insert into {} {} values ({})".format(table_name, str_tuple_fileds, str_s.rstrip(","))
+            self.cur.executemany(str_ins, list_values)
+            self.db.commit()
+            print("成功插入{}库,{}条数据".format(table_name, len(list_values)))
+        except Exception as e:
+            print("插入失败!!\n{}".format(e))
 
 
 
